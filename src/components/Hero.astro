@@ -1,0 +1,67 @@
+---
+import type { Lang } from "../i18n/utils";
+
+interface Props {
+  lang: Lang;
+  t: any;
+}
+
+const { lang, t } = Astro.props;
+---
+
+<section class="min-h-screen flex items-center px-6 pt-24 pb-16">
+  <div class="max-w-xl mx-auto w-full">
+    <div class="max-w-xl"> 
+      <!-- Main heading -->
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-none mb-6" style="font-family: 'M PLUS Rounded 1c', sans-serif;">
+        <span class="text-slate-400 dark:text-slate-500 text-xl md:text-2xl block mb-2" style="font-weight: 300;">
+          {t.hero.greeting}
+        </span>
+        <span class="text-slate-900 dark:text-slate-50">
+          {t.hero.name}
+          <span class="text-[#DA7756]">.</span>
+        </span>
+      </h1>
+
+      <!-- Tagline -->
+      <p class="text-lg md:text-xl text-slate-700 dark:text-slate-300 mb-4 leading-snug" style="font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 300;">
+        {t.hero.tagline}
+      </p>
+
+      <!-- Sub -->
+      <p class="text-sm text-slate-500 dark:text-slate-400 max-w-xl mb-8 leading-relaxed">
+        {t.hero.sub}
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          href={`#work`}
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-xl
+                 bg-[#DA7756] hover:bg-[#e8896e] text-white font-medium
+                 transition-colors text-sm"
+        >
+          {t.hero.cta_work}
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6"/>
+          </svg>
+        </a>
+        <a
+          href={`#contact`}
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-xl
+                 border border-slate-200 dark:border-slate-700
+                 text-slate-700 dark:text-slate-300 font-medium
+                 hover:border-[#DA7756] hover:text-[#DA7756]
+                 transition-colors text-sm"
+        >
+          {t.hero.cta_contact}
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-400 dark:text-slate-600">
+      <div class="w-px h-12 bg-gradient-to-b from-transparent to-slate-300 dark:to-slate-700"></div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,39 @@
+@import "@fontsource-variable/geist";
+@import "@fontsource/m-plus-rounded-1c/300.css";
+@import "@fontsource/m-plus-rounded-1c/700.css";
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "M PLUS Rounded 1c", ui-sans-serif, system-ui, sans-serif;
+
+  --color-accent: #DA7756;
+  --color-accent-hover: #e8896e;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+}
+
+::selection {
+  background-color: #DA775640;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #DA775650;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: #DA7756; }

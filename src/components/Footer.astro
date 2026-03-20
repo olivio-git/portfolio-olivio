@@ -1,0 +1,22 @@
+---
+interface Props {
+  lang: string;
+  t: any;
+}
+const { t } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-slate-100 dark:border-slate-800/50 px-6 py-8">
+  <div class="max-w-xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4
+              text-sm text-slate-400 dark:text-slate-600">
+    <span>© {year} Olivio Subelza. {t.footer.rights}</span>
+    <span class="flex items-center gap-1.5">
+      {t.footer.built}
+      <a href="https://astro.build" target="_blank" rel="noopener noreferrer"
+         class="text-slate-500 dark:text-slate-400 hover:text-[#DA7756] transition-colors font-medium">
+        Astro
+      </a>
+    </span>
+  </div>
+</footer>
