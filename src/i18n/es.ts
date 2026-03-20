@@ -45,10 +45,6 @@ export const es = {
         title: "Apps Web & Móvil",
         desc: "React, React Native, interfaces que funcionan bien en cualquier dispositivo.",
       },
-      {
-        title: "Consultoría Técnica",
-        desc: "Revisión de arquitectura, optimización, code review para tu equipo.",
-      },
     ],
   },
   contact: {

@@ -45,10 +45,6 @@ export const en = {
         title: "Web & Mobile Apps",
         desc: "React, React Native, interfaces that work great on any device.",
       },
-      {
-        title: "Technical Consulting",
-        desc: "Architecture review, optimization, code review for your team.",
-      },
     ],
   },
   contact: {
