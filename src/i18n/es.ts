@@ -8,7 +8,7 @@ export const es = {
     greeting: "Hola, soy",
     name: "Olivio",
     tagline: "Construyo productos digitales.",
-    sub: "Desarrollador Full-Stack enfocado en crear soluciones reales. Disponible para proyectos freelance.",
+    sub: "Desarrollador Full-Stack enfocado en crear soluciones reales. Disponible para freelance y oportunidades laborales.",
     cta_work: "Ver trabajo",
     cta_contact: "Trabajemos juntos",
     cta_cv: "Descargar CV",

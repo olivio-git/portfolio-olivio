@@ -8,7 +8,7 @@ export const en = {
     greeting: "Hey, I'm",
     name: "Olivio",
     tagline: "I build digital products.",
-    sub: "Full-Stack Developer focused on building real-world solutions. Available for freelance projects.",
+    sub: "Full-Stack Developer focused on building real-world solutions. Available for freelance and job opportunities.",
     cta_work: "See my work",
     cta_contact: "Let's work together",
     cta_cv: "Download CV",
