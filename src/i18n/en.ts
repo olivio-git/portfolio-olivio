@@ -11,6 +11,7 @@ export const en = {
     sub: "Full-Stack Developer focused on building real-world solutions. Available for freelance projects.",
     cta_work: "See my work",
     cta_contact: "Let's work together",
+    cta_cv: "Download CV",
   },
   projects: {
     title: "Selected work",

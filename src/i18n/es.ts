@@ -11,6 +11,7 @@ export const es = {
     sub: "Desarrollador Full-Stack enfocado en crear soluciones reales. Disponible para proyectos freelance.",
     cta_work: "Ver trabajo",
     cta_contact: "Trabajemos juntos",
+    cta_cv: "Descargar CV",
   },
   projects: {
     title: "Proyectos seleccionados",
