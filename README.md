@@ -1,43 +1,59 @@
-# Astro Starter Kit: Minimal
+# portfolio-olivio
 
-```sh
-npm create astro@latest -- --template minimal
+Portfolio personal de [Olivio Subelza](https://oliviodev.com) — Desarrollador Full-Stack.
+
+## Stack
+
+- [Astro](https://astro.build) — framework principal
+- TypeScript
+- Tailwind CSS
+- i18n — soporte en español e inglés
+
+## Características
+
+- Diseño minimalista con soporte para modo oscuro/claro
+- Multiidioma (ES / EN)
+- Secciones: Hero, Proyectos, Servicios, Contacto
+- CV descargable
+- Deploy automático via GitHub Actions → VPS (Caddy)
+
+## Correr en local
+
+```bash
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+El servidor de desarrollo corre en `http://localhost:4321`.
 
-## 🚀 Project Structure
+## Comandos
 
-Inside of your Astro project, you'll see the following folders and files:
+| Comando           | Acción                                      |
+| :---------------- | :------------------------------------------ |
+| `npm install`     | Instala dependencias                        |
+| `npm run dev`     | Servidor de desarrollo en `localhost:4321`  |
+| `npm run build`   | Build de producción en `./dist/`            |
+| `npm run preview` | Preview del build antes de deployar         |
 
-```text
+## Estructura
+
+```
 /
-├── public/
+├── public/              # Assets estáticos (imágenes, CV, favicon)
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/      # Componentes Astro (Navbar, Hero, etc.)
+│   ├── content/         # Proyectos en Markdown
+│   ├── i18n/            # Traducciones ES/EN
+│   ├── layouts/         # Layout principal
+│   ├── pages/           # Rutas ([lang]/index.astro)
+│   └── styles/          # CSS global
+└── .github/workflows/   # CI/CD — deploy automático al hacer push a main
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Deploy
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Cada `git push` a `main` dispara un workflow de GitHub Actions que:
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+1. Instala dependencias y hace build
+2. Copia el `dist/` al VPS via SCP
+3. Caddy sirve los archivos en `https://oliviodev.com` con HTTPS automático
