@@ -1,5 +1,14 @@
 ---
-// Redirect / to /es
+// Route handled by redirects in astro.config.mjs → '/es'
+// This file serves as static fallback only
 ---
-<script>window.location.replace("/es");</script>
-<meta http-equiv="refresh" content="0;url=/es" />
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="canonical" href="https://oliviodev.com/es" />
+    <meta http-equiv="refresh" content="0;url=/es" />
+  </head>
+  <body>
+    <a href="/es">oliviodev.com/es</a>
+  </body>
+</html>

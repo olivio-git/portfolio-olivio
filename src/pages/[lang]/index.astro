@@ -14,13 +14,22 @@ export function getStaticPaths() {
 const { lang } = Astro.params as { lang: Lang };
 const t = useTranslations(lang);
 
+const seoTitle =
+  lang === "es"
+    ? "Olivio Subelza — Desarrollador Full-Stack"
+    : "Olivio Subelza — Full-Stack Developer";
+const seoDescription =
+  lang === "es"
+    ? "Desarrollador Full-Stack que construye productos digitales. Disponible para freelance y oportunidades laborales."
+    : "Full-Stack Developer building digital products. Available for freelance and job opportunities.";
+
 const allProjects = await getCollection("projects");
 const featuredProjects = allProjects
   .filter((p) => p.data.featured)
   .sort((a, b) => a.data.order - b.data.order);
 ---
 
-<Layout lang={lang} t={t}>
+<Layout lang={lang} t={t} title={seoTitle} description={seoDescription}>
   <Hero lang={lang} t={t} />
 
   <!-- Projects section -->
