@@ -71,6 +71,16 @@ export const es = {
     sub: "¿Tenés un proyecto en mente? Escribime.",
     email_label: "Email",
     or: "o encontrame en",
+    form: {
+      name: "Nombre",
+      email: "Email",
+      message: "Mensaje",
+      message_placeholder: "Contame sobre tu proyecto...",
+      send: "Enviar mensaje",
+      sending: "Enviando...",
+      success: "¡Mensaje enviado! Te respondo pronto.",
+      error: "Algo salió mal. Intentá de nuevo o escribime directo.",
+    },
   },
   footer: {
     built: "Construido con",

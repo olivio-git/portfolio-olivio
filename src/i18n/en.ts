@@ -71,6 +71,16 @@ export const en = {
     sub: "Have a project in mind? Reach out.",
     email_label: "Email",
     or: "or find me on",
+    form: {
+      name: "Name",
+      email: "Email",
+      message: "Message",
+      message_placeholder: "Tell me about your project...",
+      send: "Send message",
+      sending: "Sending...",
+      success: "Message sent! I'll get back to you soon.",
+      error: "Something went wrong. Try again or email me directly.",
+    },
   },
   footer: {
     built: "Built with",
