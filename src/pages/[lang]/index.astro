@@ -1,8 +1,10 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Hero from "../../components/Hero.astro";
+import About from "../../components/About.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
 import Services from "../../components/Services.astro";
+import TechStack from "../../components/TechStack.astro";
 import Contact from "../../components/Contact.astro";
 import { useTranslations, type Lang } from "../../i18n/utils";
 import { getCollection } from "astro:content";
@@ -20,8 +22,8 @@ const seoTitle =
     : "Olivio Subelza — Full-Stack Developer";
 const seoDescription =
   lang === "es"
-    ? "Desarrollador Full-Stack que construye productos digitales. Disponible para freelance y oportunidades laborales."
-    : "Full-Stack Developer building digital products. Available for freelance and job opportunities.";
+    ? "Olivio Subelza — Desarrollador Full-Stack de Bolivia. Construyo productos digitales con React, Node.js y React Native. Disponible para freelance y oportunidades laborales."
+    : "Olivio Subelza — Full-Stack Developer from Bolivia. I build digital products with React, Node.js, and React Native. Available for freelance and job opportunities.";
 
 const allProjects = await getCollection("projects");
 const featuredProjects = allProjects
@@ -31,9 +33,10 @@ const featuredProjects = allProjects
 
 <Layout lang={lang} t={t} title={seoTitle} description={seoDescription}>
   <Hero lang={lang} t={t} />
+  <About t={t} />
 
   <!-- Projects section -->
-  <section id="work" class="px-6 py-14 md:py-20 border-t border-slate-100 dark:border-slate-800/50">
+  <section id="work" class="px-6 py-16 md:py-24 border-t border-slate-100 dark:border-slate-800/50">
     <div class="max-w-xl mx-auto">
       <div class="mb-4">
         <p class="text-[#DA7756] text-sm font-medium tracking-wider uppercase mb-3">Work</p>
@@ -66,5 +69,6 @@ const featuredProjects = allProjects
   </section>
 
   <Services t={t} />
+  <TechStack t={t} />
   <Contact lang={lang} t={t} />
 </Layout>

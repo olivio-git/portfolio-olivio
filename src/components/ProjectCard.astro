@@ -20,18 +20,18 @@ const slug = project.id;
   <a href={`/${lang}/projects/${slug}`} class="block">
 
     <!-- Image — full width, large -->
-    <div class="w-full overflow-hidden rounded-xl mb-4
+    <div class="w-full aspect-video overflow-hidden rounded-xl mb-4
                 bg-slate-100 dark:bg-slate-800/50">
       {image ? (
         <img
           src={image}
           alt={title}
-          class="w-full object-cover object-top
+          class="w-full h-full object-cover object-top
                  group-hover:scale-[1.02] transition-transform duration-500 ease-out"
           loading="lazy"
         />
       ) : (
-        <div class="aspect-video flex items-center justify-center bg-slate-100 dark:bg-slate-800/80">
+        <div class="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-800/80">
           <span class="text-4xl font-bold text-slate-200 dark:text-slate-700"
                 style="font-family: 'M PLUS Rounded 1c', sans-serif;">
             {title.charAt(0)}
