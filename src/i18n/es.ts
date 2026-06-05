@@ -7,7 +7,7 @@ export const es = {
   hero: {
     name: "Olivio Subelza",
     role: "Desarrollador Full-Stack ( Frontend / Backend / Mobile )",
-    bio: "Olivio es ingeniero de sistemas y desarrollador freelance de Bolivia, apasionado por construir productos digitales completos — desde la idea hasta producción. Ha construido desde ERPs empresariales hasta apps móviles, siempre con atención al detalle en el código y la experiencia de usuario.",
+    bio: "Soy ingeniero de sistemas y desarrollador freelance de Bolivia, apasionado por construir productos digitales completos — desde la idea hasta producción. He construido desde ERPs empresariales hasta apps móviles, siempre con atención al detalle en el código y la experiencia de usuario.",
     cta_work: "Ver trabajo",
     cta_contact: "Hablemos",
     cta_cv: "CV",

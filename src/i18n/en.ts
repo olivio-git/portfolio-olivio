@@ -7,7 +7,7 @@ export const en = {
   hero: {
     name: "Olivio Subelza",
     role: "Full-Stack Developer ( Frontend / Backend / Mobile )",
-    bio: "Olivio is a systems engineer and freelance developer from Bolivia, passionate about building complete digital products — from idea to production. He has built everything from enterprise ERPs to mobile apps, always with attention to both code quality and user experience.",
+    bio: "I'm a systems engineer and freelance developer from Bolivia, passionate about building complete digital products — from idea to production. I've built everything from enterprise ERPs to mobile apps, always with attention to both code quality and user experience.",
     cta_work: "See work",
     cta_contact: "Let's talk",
     cta_cv: "CV",
