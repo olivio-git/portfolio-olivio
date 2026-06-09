@@ -13,7 +13,7 @@ const { lang, t } = Astro.props;
   <div class="max-w-xl mx-auto w-full">
 
     <!-- Name + photo row -->
-    <div class="flex items-center justify-between gap-4 mb-3">
+    <div class="flex items-center justify-between gap-4 mb-8">
       <div>
         <h1
           class="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-1"
@@ -44,11 +44,6 @@ const { lang, t } = Astro.props;
         </div>
       </div>
     </div>
-
-    <!-- Bio -->
-    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-8 max-w-md">
-      {t.hero.bio}
-    </p>
 
     <!-- Compact CTAs -->
     <div class="flex flex-wrap items-center gap-2">
