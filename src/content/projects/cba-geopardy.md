@@ -1,7 +1,7 @@
 ---
 title: "CBA Geopardy"
-description: "Juego tipo Jeopardy en tiempo real construido para el evento CBA Tarija. Múltiples equipos, tablero en vivo y sistema de puntuación."
-description_en: "Real-time Jeopardy-style game built for the CBA Tarija event. Multiple teams, live scoreboard, and scoring system."
+description: "Juego competitivo tipo Jeopardy en tiempo real para concursos estudiantiles del CBA Tarija. Modo multijugador, contadores de tiempo, puntuación dinámica y clasificación en vivo."
+description_en: "Real-time Jeopardy-style competitive game for CBA Tarija student contests. Multiplayer mode, countdown timers, dynamic scoring, and a live leaderboard."
 image: "/projects/cba-geopardy-hero.png"
 images: []
 tech: ["TypeScript", "React", "Socket.IO"]
@@ -14,4 +14,4 @@ year: 2024
 order: 4
 ---
 
-Juego competitivo para eventos en vivo. Diseñado para correr en pantalla grande con múltiples equipos participando en tiempo real.
+Juego competitivo para eventos en vivo, diseñado para correr en pantalla grande con múltiples equipos participando en tiempo real. Incluye puntuación dinámica, contadores de tiempo y clasificación en vivo. Se entregaron dos ediciones (v1 y v2) con mejoras iterativas de UX y modo multijugador entre cada evento.
