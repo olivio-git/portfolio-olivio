@@ -6,21 +6,45 @@ const { t } = Astro.props;
 ---
 
 <section id="about" class="px-6 py-16 md:py-24 border-t border-slate-100 dark:border-slate-800/50">
-  <div class="max-w-xl mx-auto">
+  <div class="reveal max-w-2xl mx-auto">
     <div class="mb-10">
-      <p class="text-[#DA7756] text-sm font-medium tracking-wider uppercase mb-3">
+      <p class="text-slate-400 dark:text-slate-500 text-sm font-medium tracking-wider uppercase mb-3">
         {t.about.label}
       </p>
-      <h2 class="text-2xl md:text-3xl font-semibold text-slate-900 dark:text-slate-50 mb-6">
+      <h2 class="section-title text-2xl md:text-3xl font-semibold text-slate-900 dark:text-slate-50 mb-6">
         {t.about.title}
       </h2>
     </div>
     <div class="space-y-4">
-      {t.about.bio.map((paragraph: string) => (
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-          {paragraph}
+      {t.about.bio.map((paragraph: string, idx: number) => (
+        <p class:list={["text-sm text-slate-600 dark:text-slate-400 leading-relaxed", idx === 0 && "indent-8"]}>
+          {paragraph.split(/\*(.+?)\*/g).map((part, i) =>
+            i % 2 === 1 ? <span class="hl">{part}</span> : part
+          )}
         </p>
       ))}
+    </div>
+
+    <!-- Timeline (craftz-style year markers) -->
+    <div class="mt-12">
+      <p class="text-slate-400 dark:text-slate-500 text-sm font-medium tracking-wider uppercase mb-4">
+        {t.about.timeline_label}
+      </p>
+      <div>
+        {t.about.timeline.map((item: { year: string; text: string }) => (
+          <div class="flex gap-4 py-3 border-t border-slate-100 dark:border-slate-800/50">
+            <span
+              class="shrink-0 w-12 font-bold text-[#0D9488]"
+              style="font-family: 'M PLUS Rounded 1c', sans-serif;"
+            >
+              {item.year}
+            </span>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              {item.text}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 </section>

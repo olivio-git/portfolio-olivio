@@ -10,18 +10,26 @@ const { lang, t } = Astro.props;
 ---
 
 <section class="px-6 pt-28 pb-16">
-  <div class="max-w-xl mx-auto w-full">
+  <div class="reveal max-w-2xl mx-auto w-full">
+
+    <!-- Greeting box (glassy, craftz-style) -->
+    <div
+      class="mb-8 rounded-lg px-4 py-2.5 text-center text-sm text-slate-600 dark:text-slate-300
+             bg-slate-900/5 dark:bg-white/8 backdrop-blur-md"
+    >
+      {t.hero.greeting}
+    </div>
 
     <!-- Name + photo row -->
     <div class="flex items-center justify-between gap-4 mb-8">
       <div>
         <h1
-          class="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-1"
+          class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-50 mb-2 tracking-tight"
           style="font-family: 'M PLUS Rounded 1c', sans-serif;"
         >
           {t.hero.name}
         </h1>
-        <p class="text-sm text-slate-500 dark:text-slate-400">
+        <p class="text-sm md:text-base text-slate-500 dark:text-slate-400">
           {t.hero.role}
         </p>
       </div>
@@ -31,12 +39,12 @@ const { lang, t } = Astro.props;
         <img
           src="/photo.jpg"
           alt={t.hero.name}
-          class="w-24 h-24 rounded-full object-cover ring-2 ring-slate-200 dark:ring-slate-700 ring-offset-2 ring-offset-white dark:ring-offset-[#1a1a1a]"
+          class="w-24 h-24 rounded-full object-cover ring-2 ring-slate-200 dark:ring-slate-700 ring-offset-2 ring-offset-[#FAF8F5] dark:ring-offset-[#1B1A18]"
           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
         />
         <!-- Fallback initials (hidden when photo loads) -->
         <div
-          class="w-24 h-24 rounded-full bg-slate-100 dark:bg-slate-800 ring-2 ring-slate-200 dark:ring-slate-700 ring-offset-2 ring-offset-white dark:ring-offset-[#1a1a1a]
+          class="w-24 h-24 rounded-full bg-slate-100 dark:bg-slate-800 ring-2 ring-slate-200 dark:ring-slate-700 ring-offset-2 ring-offset-[#FAF8F5] dark:ring-offset-[#1B1A18]
                  items-center justify-center text-base font-semibold text-slate-500 dark:text-slate-400 hidden"
           aria-hidden="true"
         >
@@ -50,7 +58,7 @@ const { lang, t } = Astro.props;
       <a
         href={`#work`}
         class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg
-               bg-[#DA7756] hover:bg-[#e8896e] text-white font-medium
+               bg-[#0D9488] hover:bg-[#14B8A6] text-white font-medium
                transition-colors text-sm"
       >
         {t.hero.cta_work}
@@ -63,7 +71,7 @@ const { lang, t } = Astro.props;
         class="inline-flex items-center px-4 py-2 rounded-lg
                border border-slate-200 dark:border-slate-700
                text-slate-700 dark:text-slate-300 font-medium
-               hover:border-[#DA7756] hover:text-[#DA7756]
+               hover:border-[#0D9488] hover:text-[#0D9488]
                transition-colors text-sm"
       >
         {t.hero.cta_contact}
@@ -74,7 +82,7 @@ const { lang, t } = Astro.props;
         class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg
                border border-slate-200 dark:border-slate-700
                text-slate-700 dark:text-slate-300 font-medium
-               hover:border-[#DA7756] hover:text-[#DA7756]
+               hover:border-[#0D9488] hover:text-[#0D9488]
                transition-colors text-sm"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

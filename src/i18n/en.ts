@@ -5,6 +5,7 @@ export const en = {
     contact: "Contact",
   },
   hero: {
+    greeting: "Hello! I'm a full-stack developer based in Bolivia!",
     name: "Olivio Subelza",
     role: "Full-Stack Developer ( Frontend / Backend / Mobile )",
     cta_work: "See work",
@@ -15,8 +16,15 @@ export const en = {
     label: "About me",
     title: "Who am I?",
     bio: [
-      "I'm Olivio Subelza, a Full-Stack Developer from Bolivia with hands-on experience building digital products from the ground up. I specialize in taking ideas from initial concept to production, working across both frontend and backend.",
-      "I work with modern technologies like React, Node.js, and React Native to build solutions that actually solve real problems. I focus on clean code, intuitive interfaces, and systems that scale. I'm always looking for new challenges and opportunities to grow as a professional.",
+      "I'm Olivio, a *full-stack* developer from Tarija, Bolivia. What I enjoy most is taking a loose idea and turning it into *something people actually end up using* — from the very first screen all the way down to the backend that holds it up.",
+      "I work with *React*, *Node.js* and *React Native*, but more than the tools I care about solving the real problem underneath: code that's easy to follow, interfaces that feel comfortable, and systems that hold up as they grow. I'm always chasing the next challenge to keep getting better.",
+    ],
+    timeline_label: "My journey",
+    timeline: [
+      { year: "2023", text: "Finished the Full Stack bootcamp (Soy Henry) and joined CBA Tarija as a Full-Stack developer." },
+      { year: "2024", text: "Freelance at R&R: multitenant backend with Node.js and WebSockets, plus a React Native mobile app." },
+      { year: "2025", text: "Kicked off my degree project (an ERP with 6 microservices, Kafka and AI) and joined TPS Intermotors as Frontend & Technical Coordinator." },
+      { year: "2026", text: "Graduated in Systems Engineering from UPDS." },
     ],
   },
   projects: {

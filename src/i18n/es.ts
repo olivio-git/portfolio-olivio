@@ -5,6 +5,7 @@ export const es = {
     contact: "Contacto",
   },
   hero: {
+    greeting: "¡Hola! Soy desarrollador full-stack desde Bolivia!",
     name: "Olivio Subelza",
     role: "Desarrollador Full-Stack ( Frontend / Backend / Mobile )",
     cta_work: "Ver trabajo",
@@ -15,8 +16,15 @@ export const es = {
     label: "Sobre mí",
     title: "¿Quién soy?",
     bio: [
-      "Soy Olivio Subelza, desarrollador Full-Stack de Bolivia con experiencia construyendo productos digitales desde cero. Me especializo en llevar ideas desde el concepto inicial hasta producción, trabajando tanto en frontend como en backend.",
-      "Trabajo con tecnologías modernas como React, Node.js, y React Native para crear soluciones que realmente resuelven problemas. Me enfoco en escribir código limpio, interfaces intuitivas, y sistemas que escalan. Siempre estoy buscando nuevos desafíos y oportunidades para crecer como profesional.",
+      "Soy Olivio, desarrollador *full-stack* de Tarija, Bolivia. Lo que más me gusta es agarrar una idea suelta y convertirla en *algo que la gente termina usando de verdad* — desde la primera pantalla hasta el backend que la sostiene.",
+      "Trabajo con *React*, *Node.js* y *React Native*, pero más que las herramientas me importa resolver bien el problema de fondo: código que se entiende, interfaces que se sienten cómodas y sistemas que aguantan cuando crecen. Siempre ando buscando el próximo reto para seguir mejorando.",
+    ],
+    timeline_label: "Mi camino",
+    timeline: [
+      { year: "2023", text: "Terminé el bootcamp Full Stack (Soy Henry) y entré a CBA Tarija como desarrollador Full-Stack." },
+      { year: "2024", text: "Freelance en R&R: backend multitenant con Node.js y WebSockets, más una app móvil en React Native." },
+      { year: "2025", text: "Arranqué mi proyecto de grado (ERP con 6 microservicios, Kafka e IA) y entré a TPS Intermotors como Frontend & Coordinador Técnico." },
+      { year: "2026", text: "Egresé de Ingeniería de Sistemas en la UPDS." },
     ],
   },
   projects: {
