@@ -5,19 +5,14 @@ interface Props {
 const { t } = Astro.props;
 ---
 
-<section id="about" class="px-6 py-16 md:py-24 border-t border-slate-100 dark:border-slate-800/50">
-  <div class="reveal max-w-2xl mx-auto">
-    <div class="mb-10">
-      <p class="text-slate-400 dark:text-slate-500 text-sm font-medium tracking-wider uppercase mb-3">
-        {t.about.label}
-      </p>
-      <h2 class="section-title text-2xl md:text-3xl font-semibold text-slate-900 dark:text-slate-50 mb-6">
-        {t.about.title}
-      </h2>
-    </div>
-    <div class="space-y-4">
+<section id="about" class="px-6 py-8">
+  <div class="reveal max-w-lg mx-auto">
+    <h2 class="section-title text-xl font-bold text-stone-900 dark:text-slate-50 mb-4">
+      {t.about.title}
+    </h2>
+    <div class="space-y-3">
       {t.about.bio.map((paragraph: string, idx: number) => (
-        <p class:list={["text-sm text-slate-600 dark:text-slate-400 leading-relaxed", idx === 0 && "indent-8"]}>
+        <p class:list={["text-sm text-stone-700 dark:text-slate-400 leading-relaxed text-justify", idx === 0 && "indent-8"]}>
           {paragraph.split(/\*(.+?)\*/g).map((part, i) =>
             i % 2 === 1 ? <span class="hl">{part}</span> : part
           )}
@@ -25,21 +20,21 @@ const { t } = Astro.props;
       ))}
     </div>
 
-    <!-- Timeline (craftz-style year markers) -->
-    <div class="mt-12">
-      <p class="text-slate-400 dark:text-slate-500 text-sm font-medium tracking-wider uppercase mb-4">
+    <!-- Timeline (craftz "Bio"-style year rows) -->
+    <div class="mt-8">
+      <h3 class="section-title text-xl font-bold text-stone-900 dark:text-slate-50 mb-4">
         {t.about.timeline_label}
-      </p>
-      <div>
+      </h3>
+      <div class="space-y-1.5">
         {t.about.timeline.map((item: { year: string; text: string }) => (
-          <div class="flex gap-4 py-3 border-t border-slate-100 dark:border-slate-800/50">
+          <div class="flex gap-4">
             <span
-              class="shrink-0 w-12 font-bold text-[#0D9488]"
+              class="shrink-0 w-12 font-bold text-sm leading-relaxed text-[#0D9488]"
               style="font-family: 'M PLUS Rounded 1c', sans-serif;"
             >
               {item.year}
             </span>
-            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p class="text-sm text-stone-700 dark:text-slate-400 leading-relaxed">
               {item.text}
             </p>
           </div>

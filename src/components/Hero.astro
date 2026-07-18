@@ -1,5 +1,6 @@
 ---
 import type { Lang } from "../i18n/utils";
+import VoxelCat from "./VoxelCat.astro";
 
 interface Props {
   lang: Lang;
@@ -9,27 +10,30 @@ interface Props {
 const { lang, t } = Astro.props;
 ---
 
-<section class="px-6 pt-28 pb-16">
-  <div class="reveal max-w-2xl mx-auto w-full">
+<section class="px-6 pt-20 pb-10">
+  <div class="reveal max-w-lg mx-auto w-full">
+
+    <!-- 3D voxel cat (craftz-style, drag to spin) -->
+    <VoxelCat />
 
     <!-- Greeting box (glassy, craftz-style) -->
     <div
-      class="mb-8 rounded-lg px-4 py-2.5 text-center text-sm text-slate-600 dark:text-slate-300
+      class="mb-6 rounded-lg px-4 py-2.5 text-center text-sm text-stone-700 dark:text-slate-300
              bg-slate-900/5 dark:bg-white/8 backdrop-blur-md"
     >
       {t.hero.greeting}
     </div>
 
     <!-- Name + photo row -->
-    <div class="flex items-center justify-between gap-4 mb-8">
+    <div class="flex items-center justify-between gap-4 mb-6">
       <div>
         <h1
-          class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-50 mb-2 tracking-tight"
+          class="text-3xl md:text-4xl font-bold text-stone-900 dark:text-slate-50 mb-1.5 tracking-tight"
           style="font-family: 'M PLUS Rounded 1c', sans-serif;"
         >
           {t.hero.name}
         </h1>
-        <p class="text-sm md:text-base text-slate-500 dark:text-slate-400">
+        <p class="text-sm md:text-base text-stone-600 dark:text-slate-400">
           {t.hero.role}
         </p>
       </div>
@@ -39,13 +43,13 @@ const { lang, t } = Astro.props;
         <img
           src="/photo.jpg"
           alt={t.hero.name}
-          class="w-24 h-24 rounded-full object-cover ring-2 ring-slate-200 dark:ring-slate-700 ring-offset-2 ring-offset-[#FAF8F5] dark:ring-offset-[#1B1A18]"
+          class="w-20 h-20 rounded-full object-cover ring-2 ring-stone-300 dark:ring-slate-700 ring-offset-2 ring-offset-[#F0E7DB] dark:ring-offset-[#1B1A18]"
           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
         />
         <!-- Fallback initials (hidden when photo loads) -->
         <div
-          class="w-24 h-24 rounded-full bg-slate-100 dark:bg-slate-800 ring-2 ring-slate-200 dark:ring-slate-700 ring-offset-2 ring-offset-[#FAF8F5] dark:ring-offset-[#1B1A18]
-                 items-center justify-center text-base font-semibold text-slate-500 dark:text-slate-400 hidden"
+          class="w-20 h-20 rounded-full bg-stone-100 dark:bg-slate-800 ring-2 ring-stone-300 dark:ring-slate-700 ring-offset-2 ring-offset-[#F0E7DB] dark:ring-offset-[#1B1A18]
+                 items-center justify-center text-base font-semibold text-stone-600 dark:text-slate-400 hidden"
           aria-hidden="true"
         >
           OS
@@ -69,8 +73,8 @@ const { lang, t } = Astro.props;
       <a
         href={`#contact`}
         class="inline-flex items-center px-4 py-2 rounded-lg
-               border border-slate-200 dark:border-slate-700
-               text-slate-700 dark:text-slate-300 font-medium
+               border border-stone-300 dark:border-slate-700
+               text-stone-700 dark:text-slate-300 font-medium
                hover:border-[#0D9488] hover:text-[#0D9488]
                transition-colors text-sm"
       >
@@ -80,8 +84,8 @@ const { lang, t } = Astro.props;
         href="/CV_OLIVIO.pdf"
         download
         class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg
-               border border-slate-200 dark:border-slate-700
-               text-slate-700 dark:text-slate-300 font-medium
+               border border-stone-300 dark:border-slate-700
+               text-stone-700 dark:text-slate-300 font-medium
                hover:border-[#0D9488] hover:text-[#0D9488]
                transition-colors text-sm"
       >

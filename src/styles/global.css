@@ -30,7 +30,7 @@ h1, h2, h3, h4 {
 .section-title {
   display: inline-block;
   text-decoration: underline;
-  text-decoration-color: #cbd5e1; /* slate-300 */
+  text-decoration-color: #a8a29e; /* stone-400 — visible on the warm beige bg */
   text-decoration-thickness: 3px;
   text-underline-offset: 6px;
 }

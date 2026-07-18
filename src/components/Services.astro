@@ -5,33 +5,27 @@ interface Props {
 const { t } = Astro.props;
 ---
 
-<section id="services" class="px-6 py-16 md:py-24 border-t border-slate-100 dark:border-slate-800/50">
-  <div class="reveal max-w-2xl mx-auto">
-    <!-- Header -->
-    <div class="mb-10">
-      <p class="text-slate-400 dark:text-slate-500 text-sm font-medium tracking-wider uppercase mb-3">
-        Services
-      </p>
-      <h2 class="section-title text-2xl md:text-3xl font-semibold text-slate-900 dark:text-slate-50 mb-3">
-        {t.services.title}
-      </h2>
-      <p class="text-slate-500 dark:text-slate-400 text-sm">
-        {t.services.sub}
-      </p>
-    </div>
+<section id="services" class="px-6 py-8">
+  <div class="reveal max-w-lg mx-auto">
+    <h2 class="section-title text-xl font-bold text-stone-900 dark:text-slate-50 mb-1.5">
+      {t.services.title}
+    </h2>
+    <p class="text-stone-600 dark:text-slate-400 text-sm mb-4">
+      {t.services.sub}
+    </p>
 
     <!-- Numbered list -->
     <div>
       {t.services.items.map((item: any, i: number) => (
-        <div class="flex gap-5 py-6 border-b border-slate-100 dark:border-slate-800/50">
-          <span class="text-xs font-mono text-slate-300 dark:text-slate-600 pt-0.5 w-5 shrink-0 select-none">
+        <div class="flex gap-5 py-3">
+          <span class="text-xs font-mono text-stone-400 dark:text-slate-600 pt-0.5 w-5 shrink-0 select-none">
             0{i + 1}
           </span>
           <div>
-            <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1.5">
+            <h3 class="text-sm font-semibold text-stone-900 dark:text-slate-50 mb-1">
               {item.title}
             </h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            <p class="text-sm text-stone-600 dark:text-slate-400 leading-relaxed">
               {item.desc}
             </p>
           </div>

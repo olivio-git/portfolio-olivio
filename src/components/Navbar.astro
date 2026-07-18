@@ -25,7 +25,7 @@ const alternatePath = `/${otherLang}${pathWithoutLang === "/" ? "" : pathWithout
     <!-- Logo -->
     <a
       href={`/${lang}`}
-      class="flex items-center gap-2 text-base text-slate-900 dark:text-slate-100 hover:text-[#0D9488] transition-colors"
+      class="flex items-center gap-2 text-base text-stone-900 dark:text-slate-100 hover:text-[#0D9488] transition-colors"
       style="font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700;"
     >
       <img src="/cat_removed_background.png" alt="cat" class="cat-mascot w-7 h-7 object-contain dark:invert" />
@@ -33,22 +33,22 @@ const alternatePath = `/${otherLang}${pathWithoutLang === "/" ? "" : pathWithout
     </a>
 
     <!-- Nav links — desktop only -->
-    <ul class="hidden md:flex items-center gap-8 text-sm text-slate-500 dark:text-slate-400">
+    <ul class="hidden md:flex items-center gap-8 text-sm text-stone-600 dark:text-slate-400">
       <li>
         <a href={`/${lang}#work`} data-section="work"
-           class="nav-link relative py-1 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
+           class="nav-link relative py-1 hover:text-stone-900 dark:hover:text-slate-100 transition-colors">
           {t.nav.work}
         </a>
       </li>
       <li>
         <a href={`/${lang}#services`} data-section="services"
-           class="nav-link relative py-1 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
+           class="nav-link relative py-1 hover:text-stone-900 dark:hover:text-slate-100 transition-colors">
           {t.nav.services}
         </a>
       </li>
       <li>
         <a href={`/${lang}#contact`} data-section="contact"
-           class="nav-link relative py-1 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
+           class="nav-link relative py-1 hover:text-stone-900 dark:hover:text-slate-100 transition-colors">
           {t.nav.contact}
         </a>
       </li>
@@ -59,7 +59,7 @@ const alternatePath = `/${otherLang}${pathWithoutLang === "/" ? "" : pathWithout
       <a
         href={alternatePath}
         class="text-xs font-medium px-2.5 py-1 rounded-lg
-               text-slate-500 dark:text-slate-400
+               text-stone-600 dark:text-slate-400
                hover:text-[#0D9488] transition-colors"
       >
         {languages[otherLang]}
@@ -67,7 +67,7 @@ const alternatePath = `/${otherLang}${pathWithoutLang === "/" ? "" : pathWithout
       <button
         id="theme-toggle"
         aria-label="Toggle theme"
-        class="p-2 rounded-lg text-slate-500 dark:text-slate-400
+        class="p-2 rounded-lg text-stone-600 dark:text-slate-400
                hover:text-[#0D9488] transition-colors"
       >
         <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden dark:block">
@@ -84,7 +84,7 @@ const alternatePath = `/${otherLang}${pathWithoutLang === "/" ? "" : pathWithout
     <button
       id="menu-toggle"
       aria-label="Toggle menu"
-      class="md:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-[#0D9488] transition-colors"
+      class="md:hidden p-2 text-stone-600 dark:text-slate-400 hover:text-[#0D9488] transition-colors"
     >
       <svg id="icon-menu" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="4" x2="20" y1="6" y2="6"/>
@@ -100,19 +100,19 @@ const alternatePath = `/${otherLang}${pathWithoutLang === "/" ? "" : pathWithout
   <!-- Mobile menu panel -->
   <div
     id="mobile-menu"
-    class="md:!hidden bg-[#FAF8F5]/95 dark:bg-[#1B1A18]/95 backdrop-blur-xl"
+    class="md:!hidden bg-[#F0E7DB]/95 dark:bg-[#1B1A18]/95 backdrop-blur-xl"
   >
     <div class="max-w-2xl mx-auto px-6 py-4 flex flex-col gap-1">
       <a href={`/${lang}#work`} data-mobile-link
-         class="py-3 text-sm text-slate-600 dark:text-slate-300 hover:text-[#0D9488] transition-colors border-b border-slate-100 dark:border-slate-800/50">
+         class="py-3 text-sm text-stone-700 dark:text-slate-300 hover:text-[#0D9488] transition-colors border-b border-stone-200 dark:border-slate-800/50">
         {t.nav.work}
       </a>
       <a href={`/${lang}#services`} data-mobile-link
-         class="py-3 text-sm text-slate-600 dark:text-slate-300 hover:text-[#0D9488] transition-colors border-b border-slate-100 dark:border-slate-800/50">
+         class="py-3 text-sm text-stone-700 dark:text-slate-300 hover:text-[#0D9488] transition-colors border-b border-stone-200 dark:border-slate-800/50">
         {t.nav.services}
       </a>
       <a href={`/${lang}#contact`} data-mobile-link
-         class="py-3 text-sm text-slate-600 dark:text-slate-300 hover:text-[#0D9488] transition-colors border-b border-slate-100 dark:border-slate-800/50">
+         class="py-3 text-sm text-stone-700 dark:text-slate-300 hover:text-[#0D9488] transition-colors border-b border-stone-200 dark:border-slate-800/50">
         {t.nav.contact}
       </a>
       <!-- Mobile controls row -->
@@ -120,8 +120,8 @@ const alternatePath = `/${otherLang}${pathWithoutLang === "/" ? "" : pathWithout
         <a
           href={alternatePath}
           class="text-xs font-medium px-3 py-1.5 rounded-lg
-                 bg-slate-100 dark:bg-slate-800
-                 text-slate-500 dark:text-slate-400
+                 bg-stone-100 dark:bg-slate-800
+                 text-stone-600 dark:text-slate-400
                  hover:text-[#0D9488] transition-colors"
         >
           {languages[otherLang]}
@@ -129,7 +129,7 @@ const alternatePath = `/${otherLang}${pathWithoutLang === "/" ? "" : pathWithout
         <button
           id="theme-toggle-mobile"
           aria-label="Toggle theme"
-          class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-[#0D9488] transition-colors"
+          class="flex items-center gap-2 text-sm text-stone-600 dark:text-slate-400 hover:text-[#0D9488] transition-colors"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden dark:block">
             <circle cx="12" cy="12" r="4"/>
@@ -218,7 +218,7 @@ const alternatePath = `/${otherLang}${pathWithoutLang === "/" ? "" : pathWithout
   const header = document.getElementById("site-header");
   function updateHeader() {
     if (window.scrollY > 20) {
-      header.style.backgroundColor = "rgba(250,248,245,0.8)";
+      header.style.backgroundColor = "rgba(240,231,219,0.8)";
       header.style.backdropFilter = "blur(20px)";
       header.style.webkitBackdropFilter = "blur(20px)";
     } else {
@@ -232,7 +232,7 @@ const alternatePath = `/${otherLang}${pathWithoutLang === "/" ? "" : pathWithout
   function updateHeaderColor() {
     if (window.scrollY > 20) {
       const isDark = document.documentElement.classList.contains("dark");
-      header.style.backgroundColor = isDark ? "rgba(27,26,24,0.85)" : "rgba(250,248,245,0.8)";
+      header.style.backgroundColor = isDark ? "rgba(27,26,24,0.85)" : "rgba(240,231,219,0.8)";
     }
   }
 

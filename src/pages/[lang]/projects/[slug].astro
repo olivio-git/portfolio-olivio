@@ -23,36 +23,36 @@ const desc = lang === "en" ? description_en : description;
 ---
 
 <Layout lang={lang} title={`${title} — Olivio`} description={desc}>
-  <article class="min-h-screen px-6 pt-32 pb-24">
-    <div class="reveal max-w-2xl mx-auto">
+  <article class="min-h-screen px-6 pt-24 pb-16">
+    <div class="reveal max-w-lg mx-auto">
 
       <!-- Breadcrumb -->
-      <nav class="flex items-center gap-2 mb-12 text-sm font-medium">
+      <nav class="flex items-center gap-2 mb-6 text-sm font-medium">
         <a
           href={`/${lang}#work`}
-          class="text-[#0D9488] hover:text-[#c46040] transition-colors"
+          class="text-[#0D9488] hover:text-[#14B8A6] transition-colors"
         >
           {lang === "es" ? "Trabajos" : "Work"}
         </a>
-        <span class="text-slate-300 dark:text-slate-600 select-none">›</span>
-        <span class="text-slate-900 dark:text-slate-100 flex items-center gap-2">
+        <span class="text-stone-400 dark:text-slate-600 select-none">›</span>
+        <span class="text-stone-900 dark:text-slate-100 flex items-center gap-2">
           {title}
           <span class="text-xs font-medium px-2 py-0.5 rounded-full
-                       bg-slate-100 dark:bg-slate-800
-                       text-slate-400 dark:text-slate-500 leading-none">
+                       bg-stone-100 dark:bg-slate-800
+                       text-stone-500 dark:text-slate-500 leading-none">
             {year}
           </span>
         </span>
       </nav>
 
       <!-- Description -->
-      <p class="text-lg font-medium text-slate-500 dark:text-slate-400 leading-relaxed mb-10 max-w-xl"
+      <p class="text-lg font-medium text-stone-600 dark:text-slate-400 leading-relaxed mb-6 max-w-xl"
          style="font-family: 'M PLUS Rounded 1c', sans-serif;">
         {desc}
       </p>
 
       <!-- Links -->
-      <div class="flex flex-wrap items-center gap-4 mb-16">
+      <div class="flex flex-wrap items-center gap-4 mb-8">
         {github && (
           <a href={github} target="_blank" rel="noopener noreferrer"
              class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl
@@ -67,8 +67,8 @@ const desc = lang === "en" ? description_en : description;
         {demo && (
           <a href={demo} target="_blank" rel="noopener noreferrer"
              class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl
-                    border border-slate-200 dark:border-slate-700
-                    text-slate-700 dark:text-slate-300 text-sm font-medium
+                    border border-stone-300 dark:border-slate-700
+                    text-stone-700 dark:text-slate-300 text-sm font-medium
                     hover:border-[#0D9488] hover:text-[#0D9488] transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/>
@@ -80,21 +80,21 @@ const desc = lang === "en" ? description_en : description;
 
       <!-- Hero image -->
       {image && (
-        <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700/50 mb-16">
+        <div class="rounded-2xl overflow-hidden border border-stone-300 dark:border-slate-700/50 mb-8">
           <img src={image} alt={title} class="w-full" loading="eager" />
         </div>
       )}
 
       <!-- Tech stack -->
-      <div class="mb-16">
-        <p class="text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-4">
+      <div class="mb-8">
+        <p class="text-xs font-medium text-stone-500 dark:text-slate-500 uppercase tracking-wider mb-4">
           {lang === "es" ? "Tecnologías" : "Tech stack"}
         </p>
         <div class="flex flex-wrap gap-2">
           {tech.map((item) => (
             <span class="text-sm px-3 py-1.5 rounded-lg
-                         border border-slate-200 dark:border-slate-700
-                         text-slate-600 dark:text-slate-400 font-mono">
+                         border border-stone-300 dark:border-slate-700
+                         text-stone-700 dark:text-slate-400 font-mono">
               {item}
             </span>
           ))}
@@ -102,16 +102,16 @@ const desc = lang === "en" ? description_en : description;
       </div>
 
       <!-- Content from md -->
-      <div class="prose prose-slate dark:prose-invert max-w-none
+      <div class="prose prose-stone dark:prose-invert max-w-none
                   prose-headings:font-semibold prose-a:text-[#0D9488]">
         <Content />
       </div>
 
       <!-- Additional images -->
       {images && images.length > 0 && (
-        <div class="mt-16 grid sm:grid-cols-2 gap-4">
+        <div class="mt-8 grid sm:grid-cols-2 gap-4">
           {images.map((img) => (
-            <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700/50">
+            <div class="rounded-xl overflow-hidden border border-stone-300 dark:border-slate-700/50">
               <img src={img} alt={`${title} screenshot`} class="w-full" loading="lazy" />
             </div>
           ))}

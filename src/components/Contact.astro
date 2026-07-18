@@ -10,16 +10,13 @@ const { lang, t } = Astro.props;
 const FORMSPREE_ID = "xdaywoqy";
 ---
 
-<section id="contact" class="px-6 py-16 md:py-24 border-t border-slate-100 dark:border-slate-800/50">
-  <div class="reveal max-w-2xl mx-auto">
+<section id="contact" class="px-6 py-8 pb-12">
+  <div class="reveal max-w-lg mx-auto">
 
-    <p class="text-slate-400 dark:text-slate-500 text-sm font-medium tracking-wider uppercase mb-6">Contact</p>
-
-    <h2 class="section-title text-2xl md:text-3xl font-semibold text-slate-900 dark:text-slate-50 mb-3"
-        style="font-family: 'M PLUS Rounded 1c', sans-serif;">
+    <h2 class="section-title text-xl font-bold text-stone-900 dark:text-slate-50 mb-1.5">
       {t.contact.title}
     </h2>
-    <p class="text-slate-400 dark:text-slate-500 text-sm mb-10">
+    <p class="text-stone-500 dark:text-slate-500 text-sm mb-6">
       {t.contact.sub}
     </p>
 
@@ -28,11 +25,11 @@ const FORMSPREE_ID = "xdaywoqy";
       id="contact-form"
       action={`https://formspree.io/f/${FORMSPREE_ID}`}
       method="POST"
-      class="flex flex-col gap-4 mb-10"
+      class="flex flex-col gap-4 mb-8"
     >
       <div class="grid sm:grid-cols-2 gap-4">
         <div class="flex flex-col gap-1.5">
-          <label for="name" class="text-xs font-medium text-slate-500 dark:text-slate-400">
+          <label for="name" class="text-xs font-medium text-stone-600 dark:text-slate-400">
             {t.contact.form.name}
           </label>
           <input
@@ -41,16 +38,16 @@ const FORMSPREE_ID = "xdaywoqy";
             name="name"
             required
             class="px-4 py-2.5 rounded-xl text-sm
-                   bg-slate-50 dark:bg-slate-800/60
-                   border border-slate-200 dark:border-slate-700
-                   text-slate-900 dark:text-slate-100
-                   placeholder:text-slate-300 dark:placeholder:text-slate-600
+                   bg-stone-50 dark:bg-slate-800/60
+                   border border-stone-300 dark:border-slate-700
+                   text-stone-900 dark:text-slate-100
+                   placeholder:text-stone-400 dark:placeholder:text-slate-600
                    focus:outline-none focus:border-[#0D9488] dark:focus:border-[#0D9488]
                    transition-colors"
           />
         </div>
         <div class="flex flex-col gap-1.5">
-          <label for="email" class="text-xs font-medium text-slate-500 dark:text-slate-400">
+          <label for="email" class="text-xs font-medium text-stone-600 dark:text-slate-400">
             {t.contact.form.email}
           </label>
           <input
@@ -59,10 +56,10 @@ const FORMSPREE_ID = "xdaywoqy";
             name="email"
             required
             class="px-4 py-2.5 rounded-xl text-sm
-                   bg-slate-50 dark:bg-slate-800/60
-                   border border-slate-200 dark:border-slate-700
-                   text-slate-900 dark:text-slate-100
-                   placeholder:text-slate-300 dark:placeholder:text-slate-600
+                   bg-stone-50 dark:bg-slate-800/60
+                   border border-stone-300 dark:border-slate-700
+                   text-stone-900 dark:text-slate-100
+                   placeholder:text-stone-400 dark:placeholder:text-slate-600
                    focus:outline-none focus:border-[#0D9488] dark:focus:border-[#0D9488]
                    transition-colors"
           />
@@ -70,7 +67,7 @@ const FORMSPREE_ID = "xdaywoqy";
       </div>
 
       <div class="flex flex-col gap-1.5">
-        <label for="message" class="text-xs font-medium text-slate-500 dark:text-slate-400">
+        <label for="message" class="text-xs font-medium text-stone-600 dark:text-slate-400">
           {t.contact.form.message}
         </label>
         <textarea
@@ -80,10 +77,10 @@ const FORMSPREE_ID = "xdaywoqy";
           rows="5"
           placeholder={t.contact.form.message_placeholder}
           class="px-4 py-2.5 rounded-xl text-sm resize-none
-                 bg-slate-50 dark:bg-slate-800/60
-                 border border-slate-200 dark:border-slate-700
-                 text-slate-900 dark:text-slate-100
-                 placeholder:text-slate-300 dark:placeholder:text-slate-600
+                 bg-stone-50 dark:bg-slate-800/60
+                 border border-stone-300 dark:border-slate-700
+                 text-stone-900 dark:text-slate-100
+                 placeholder:text-stone-400 dark:placeholder:text-slate-600
                  focus:outline-none focus:border-[#0D9488] dark:focus:border-[#0D9488]
                  transition-colors"
         />
@@ -109,15 +106,15 @@ const FORMSPREE_ID = "xdaywoqy";
     <!-- Email con copy -->
     <div class="flex items-center gap-2 mb-8
                 px-4 py-2.5 rounded-xl w-fit
-                bg-slate-50 dark:bg-slate-800/60
-                border border-slate-200 dark:border-slate-700">
-      <span class="text-sm text-slate-500 dark:text-slate-400 select-all">
+                bg-stone-50 dark:bg-slate-800/60
+                border border-stone-300 dark:border-slate-700">
+      <span class="text-sm text-stone-600 dark:text-slate-400 select-all">
         subelzaolivitocabezas@gmail.com
       </span>
       <button
         id="copy-email-btn"
         aria-label="Copiar email"
-        class="ml-1 p-1 rounded-lg text-slate-400 dark:text-slate-500
+        class="ml-1 p-1 rounded-lg text-stone-500 dark:text-slate-500
                hover:text-[#0D9488] transition-colors"
       >
         <svg id="icon-copy" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -133,12 +130,12 @@ const FORMSPREE_ID = "xdaywoqy";
     <!-- Social -->
     <div class="flex items-center gap-6">
       <a href="https://github.com/olivio-git" target="_blank" rel="noopener noreferrer"
-         class="text-sm text-slate-400 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-200
+         class="text-sm text-stone-500 dark:text-slate-500 hover:text-stone-800 dark:hover:text-slate-200
                 transition-colors underline-offset-4 hover:underline">
         GitHub
       </a>
       <a href="https://www.linkedin.com/in/olivio-subelza-cabezas-b646a2249" target="_blank" rel="noopener noreferrer"
-         class="text-sm text-slate-400 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-200
+         class="text-sm text-stone-500 dark:text-slate-500 hover:text-stone-800 dark:hover:text-slate-200
                 transition-colors underline-offset-4 hover:underline">
         LinkedIn
       </a>
