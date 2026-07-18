@@ -1,0 +1,354 @@
+<!--
+  Voxel version of the site's mascot: a sitting cat licking its raised paw
+  (toe beans out, happy closed eyes) — built procedurally with three.js.
+  Theme-reactive like the logo: cream cat in dark mode, black cat in light mode.
+  Orthographic camera orbits slowly; drag to rotate. Idle life: breathing,
+  tail sway, occasional ear twitch.
+-->
+<div
+  id="voxel-cat"
+  class="voxel-cat relative mx-auto -mb-2 h-[260px] w-full max-w-[520px] cursor-grab active:cursor-grabbing sm:h-[340px]"
+  aria-hidden="true"
+>
+</div>
+
+<style>
+  .voxel-cat canvas {
+    opacity: 0;
+    transition: opacity 0.9s ease;
+  }
+  .voxel-cat.is-ready canvas {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  import * as THREE from "three";
+
+  const container = document.getElementById("voxel-cat");
+
+  if (container) {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const scene = new THREE.Scene();
+    const model = new THREE.Group();
+    scene.add(model);
+
+    // ---- theme-reactive palette (mirrors the logo: white cat on dark, black cat on light) ----
+    const THEMES = {
+      dark: { fur: 0xefe9df, sock: 0xfbf9f5, eye: 0x2b2b2b, whisker: 0xc9c3b6 },
+      light: { fur: 0x2e2c31, sock: 0xf5f3ee, eye: 0xf5f3ee, whisker: 0x55525a },
+    };
+    const PINK = 0xe89aa4;
+    const PINK_DARK = 0xd9808c;
+    const TEAL = 0x0d9488;
+    const TEAL_LIGHT = 0x14b8a6;
+    const SCREEN_BG = 0xdff5f0;
+    const SILVER = 0xd8d3ca;
+    const SILVER_DARK = 0xaaa59b;
+
+    const matFur = new THREE.MeshLambertMaterial();
+    const matSock = new THREE.MeshLambertMaterial();
+    const matEye = new THREE.MeshLambertMaterial();
+    const matWhisker = new THREE.MeshLambertMaterial();
+
+    let ready = false; // renderer/camera exist — safe to render on demand
+    function applyTheme() {
+      const t = document.documentElement.classList.contains("dark") ? THEMES.dark : THEMES.light;
+      matFur.color.set(t.fur);
+      matSock.color.set(t.sock);
+      matEye.color.set(t.eye);
+      matWhisker.color.set(t.whisker);
+      if (reduceMotion && ready) render();
+    }
+    applyTheme();
+    new MutationObserver(applyTheme).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    // Box from min-corner + size (voxel-style, everything axis-aligned)
+    function B(
+      parent: THREE.Object3D,
+      x: number, y: number, z: number,
+      w: number, h: number, d: number,
+      material: THREE.Material | number
+    ) {
+      const mat =
+        typeof material === "number"
+          ? new THREE.MeshLambertMaterial({ color: material })
+          : material;
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+      mesh.position.set(x + w / 2, y + h / 2, z + d / 2);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      parent.add(mesh);
+      return mesh;
+    }
+
+    // ---- teal rug (brand accent) ----
+    const rug = new THREE.Mesh(
+      new THREE.CylinderGeometry(6.4, 6.4, 0.35, 10),
+      new THREE.MeshLambertMaterial({ color: TEAL, flatShading: true })
+    );
+    rug.position.y = 0.175;
+    rug.receiveShadow = true;
+    model.add(rug);
+    const rugTop = new THREE.Mesh(
+      new THREE.CylinderGeometry(4.6, 4.6, 0.12, 10),
+      new THREE.MeshLambertMaterial({ color: TEAL_LIGHT, flatShading: true })
+    );
+    rugTop.position.y = 0.41;
+    rugTop.receiveShadow = true;
+    model.add(rugTop);
+
+    const R = 0.45; // rug surface height — cat sits on top of it
+
+    // body group (breathes)
+    const body = new THREE.Group();
+    body.position.y = R;
+    model.add(body);
+
+    // ---- sitting body: wide hips, chest rising, cat facing +z ----
+    B(body, -3, 0, -2.6, 6, 3, 4.6, matFur); // hips
+    B(body, -2.6, 3, -2.3, 5.2, 2.4, 4, matFur); // lower back
+    B(body, -2.1, 5.4, -1.8, 4.2, 2.2, 3.1, matFur); // chest / shoulders
+    B(body, -1.1, 2.6, 1.15, 2.2, 3.4, 0.5, matSock); // white chest patch
+
+    // ---- head (tilted slightly toward the raised paw) ----
+    const head = new THREE.Group();
+    head.position.set(-0.3, 7.6, 0);
+    head.rotation.z = 0.07;
+    head.rotation.x = 0.08; // looking down at the raised paw
+    body.add(head);
+    B(head, -2.3, 0, -1.4, 4.6, 3.4, 3.3, matFur); // skull
+    B(head, -1.05, 0.35, 1.9, 2.1, 1.05, 0.55, matSock); // muzzle
+    B(head, -0.34, 1.12, 2.28, 0.68, 0.42, 0.3, PINK_DARK); // nose
+    // happy closed eyes — slit + tiny outer step (˘ ˘)
+    B(head, -1.85, 1.95, 2.12, 0.95, 0.2, 0.1, matEye);
+    B(head, -1.98, 2.08, 2.12, 0.3, 0.2, 0.1, matEye);
+    B(head, 0.9, 1.95, 2.12, 0.95, 0.2, 0.1, matEye);
+    B(head, 1.68, 2.08, 2.12, 0.3, 0.2, 0.1, matEye);
+    // whiskers
+    B(head, -3.6, 0.55, 1.7, 1.7, 0.09, 0.09, matWhisker);
+    B(head, -3.75, 0.95, 1.7, 1.85, 0.09, 0.09, matWhisker);
+    B(head, 1.9, 0.55, 1.7, 1.7, 0.09, 0.09, matWhisker);
+    B(head, 1.9, 0.95, 1.7, 1.85, 0.09, 0.09, matWhisker);
+    // ears (refs kept for the twitch animation)
+    const earL = B(head, -2.1, 3.4, -0.9, 1.25, 1.35, 1.0, matFur);
+    const earR = B(head, 0.85, 3.4, -0.9, 1.25, 1.35, 1.0, matFur);
+    B(head, -1.83, 3.4, 0.11, 0.7, 0.75, 0.12, PINK); // inner ears
+    B(head, 1.12, 3.4, 0.11, 0.7, 0.75, 0.12, PINK);
+
+    // ---- raised paw in front of the chin (like the logo), toe beans facing out ----
+    B(body, -2.35, 5.2, 1.6, 1.25, 2.6, 1.25, matFur); // forearm up, forward of the chest
+    B(body, -2.55, 7.6, 1.4, 1.6, 1.6, 1.65, matFur); // paw under the muzzle
+    B(body, -2.45, 8.45, 3.03, 1.4, 0.62, 0.14, matSock); // pad backing
+    B(body, -2.18, 7.92, 3.05, 0.86, 0.52, 0.18, PINK); // big bean
+    B(body, -2.38, 8.55, 3.09, 0.34, 0.34, 0.18, PINK); // small beans
+    B(body, -1.92, 8.62, 3.09, 0.34, 0.34, 0.18, PINK);
+    B(body, -1.48, 8.52, 3.09, 0.34, 0.34, 0.18, PINK);
+
+    // ---- other front leg, forward of the chest so it reads clearly ----
+    B(body, 1.0, 1, 0.9, 1.35, 4.6, 1.35, matFur);
+    B(body, 0.9, 0, 0.95, 1.6, 1.05, 2.2, matSock); // front foot
+    B(body, -2.7, 0, 0.8, 1.5, 1.05, 2.2, matSock); // hind foot peeking
+
+    // ---- tail: S-curve standing away from the body (sways) ----
+    const tail = new THREE.Group();
+    tail.position.set(2.6, R, -1.6); // pivot at the hip
+    model.add(tail);
+    const T = matFur;
+    B(tail, 0.3, 0.1, -0.6, 1.0, 1.0, 1.0, T); // touches the hip
+    B(tail, 1.1, 0.5, -0.2, 1.0, 1.0, 1.0, T); // swings out, clear of the body
+    B(tail, 1.7, 1.0, 0.5, 1.0, 1.0, 1.0, T);
+    B(tail, 1.9, 1.7, 1.4, 1.0, 1.0, 1.0, T);
+    B(tail, 1.7, 2.4, 2.2, 1.0, 1.0, 1.0, matSock); // white tip, curling up
+
+    // ---- open laptop on the floor in front of the cat ----
+    const laptop = new THREE.Group();
+    laptop.position.set(0.15, R, 3.8);
+    laptop.rotation.y = -0.12; // slight angle so it reads as a laptop
+    model.add(laptop);
+    B(laptop, -1.9, 0, 0, 3.8, 0.3, 2.4, SILVER); // base
+    B(laptop, -1.6, 0.3, 0.2, 3.2, 0.1, 1.6, SILVER_DARK); // keyboard
+    B(laptop, -0.6, 0.31, 1.9, 1.2, 0.09, 0.4, SILVER_DARK); // touchpad
+    const lid = new THREE.Group();
+    lid.position.set(0, 0.15, 2.35); // hinge at the back edge
+    lid.rotation.x = 0.18; // nearly upright, screen facing the cat
+    laptop.add(lid);
+    B(lid, -1.9, 0, -0.13, 3.8, 2.9, 0.26, SILVER); // lid
+    B(lid, -1.6, 0.28, -0.24, 3.2, 2.35, 0.13, SCREEN_BG); // display
+    // "code" lines on the display
+    B(lid, -1.35, 2.0, -0.3, 1.7, 0.24, 0.06, TEAL);
+    B(lid, -1.35, 1.55, -0.3, 1.0, 0.24, 0.06, PINK_DARK);
+    B(lid, -0.9, 1.1, -0.3, 1.8, 0.24, 0.06, TEAL);
+    B(lid, -0.35, 1.15, 0.11, 0.7, 0.7, 0.06, TEAL); // logo on the lid back
+
+    // center the model on x/z so it spins around its middle
+    const bounds = new THREE.Box3().setFromObject(model);
+    const center = bounds.getCenter(new THREE.Vector3());
+    model.position.x = -center.x;
+    model.position.z = -center.z;
+
+    // ---- ground shadow ----
+    const ground = new THREE.Mesh(
+      new THREE.CircleGeometry(12, 48),
+      new THREE.ShadowMaterial({ opacity: 0.16 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    // ---- lights ----
+    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x8899aa, 0.5));
+    const sun = new THREE.DirectionalLight(0xffffff, 1.15);
+    sun.position.set(12, 20, 8);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(1024, 1024);
+    sun.shadow.camera.left = -16;
+    sun.shadow.camera.right = 16;
+    sun.shadow.camera.top = 16;
+    sun.shadow.camera.bottom = -16;
+    scene.add(sun);
+
+    // ---- camera (orthographic, orbiting) ----
+    const target = new THREE.Vector3(0, 4.9, 0);
+    const camera = new THREE.OrthographicCamera();
+    const RADIUS = 30;
+    const CAM_HEIGHT = 13;
+
+    function frameCamera() {
+      const aspect = container.clientWidth / Math.max(container.clientHeight, 1);
+      let halfH = 8.4; // tall enough that the ears never clip while orbiting
+      if (halfH * aspect < 8.5) halfH = 8.5 / aspect; // keep full width on narrow screens
+      camera.left = -halfH * aspect;
+      camera.right = halfH * aspect;
+      camera.top = halfH;
+      camera.bottom = -halfH;
+      camera.near = 0.1;
+      camera.far = 100;
+      camera.updateProjectionMatrix();
+    }
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.appendChild(renderer.domElement);
+
+    function resize() {
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      frameCamera();
+      // setSize clears the canvas; without the animation loop nothing redraws it
+      if (reduceMotion && ready) render();
+    }
+    resize();
+    new ResizeObserver(resize).observe(container);
+
+    // ---- orbit + drag ----
+    const START = -0.35; // 3/4 view: face + raised paw toward the viewer
+    let azimuth = START;
+    const autoSpeed = reduceMotion ? 0 : 0.35; // rad/s
+    let dragging = false;
+    let lastX = 0;
+    let velocity = 0;
+
+    container.addEventListener("pointerdown", (e) => {
+      dragging = true;
+      lastX = e.clientX;
+      container.setPointerCapture(e.pointerId);
+    });
+    container.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - lastX;
+      lastX = e.clientX;
+      azimuth += dx * 0.008;
+      velocity = dx * 0.008;
+      if (reduceMotion) render();
+    });
+    const endDrag = () => { dragging = false; };
+    container.addEventListener("pointerup", endDrag);
+    container.addEventListener("pointercancel", endDrag);
+
+    function positionCamera() {
+      camera.position.set(
+        RADIUS * Math.sin(azimuth),
+        CAM_HEIGHT,
+        RADIUS * Math.cos(azimuth)
+      );
+      camera.lookAt(target);
+    }
+
+    function render() {
+      positionCamera();
+      renderer.render(scene, camera);
+    }
+
+    // ---- idle life: breathing, tail sway, random ear twitch ----
+    let twitchEar: THREE.Mesh | null = null;
+    let twitchUntil = 0;
+    let nextTwitch = performance.now() + 2500;
+
+    function animateLife(now: number) {
+      const s = now / 1000;
+      body.scale.y = 1 + 0.012 * Math.sin(s * 1.7); // breathing
+      tail.rotation.y = 0.10 * Math.sin(s * 1.2); // tail sway
+      if (now > nextTwitch && !twitchEar) {
+        twitchEar = Math.random() < 0.5 ? earL : earR;
+        twitchUntil = now + 320;
+      }
+      if (twitchEar) {
+        if (now < twitchUntil) {
+          twitchEar.rotation.z = 0.3 * Math.sin(((twitchUntil - now) / 320) * Math.PI * 2);
+        } else {
+          twitchEar.rotation.z = 0;
+          twitchEar = null;
+          nextTwitch = now + 2500 + Math.random() * 4000;
+        }
+      }
+    }
+
+    // entrance: quick ease-in spin + fade
+    const ENTER_MS = 900;
+    const startTime = performance.now();
+    let visible = true;
+    let last = startTime;
+
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+    });
+    io.observe(container);
+
+    function tick(now: number) {
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+
+      if (visible) {
+        const t = Math.min((now - startTime) / ENTER_MS, 1);
+        const easeOut = 1 - Math.pow(1 - t, 3);
+        if (t < 1) {
+          azimuth = START - 1.4 * (1 - easeOut);
+        } else if (!dragging) {
+          if (Math.abs(velocity) > 0.001) {
+            azimuth += velocity;
+            velocity *= 0.94; // inertia after release
+          } else {
+            azimuth += autoSpeed * dt;
+          }
+        }
+        animateLife(now);
+        render();
+      }
+      if (!reduceMotion) requestAnimationFrame(tick);
+    }
+
+    ready = true;
+    render();
+    container.classList.add("is-ready");
+    if (!reduceMotion) {
+      requestAnimationFrame(tick);
+    }
+  }
+</script>
