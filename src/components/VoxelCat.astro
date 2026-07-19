@@ -24,6 +24,9 @@
 
 <script>
   import * as THREE from "three";
+  import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+  import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+  import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
   const container = document.getElementById("voxel-cat");
 
@@ -36,7 +39,8 @@
 
     // ---- theme-reactive palette (mirrors the logo: white cat on dark, black cat on light) ----
     const THEMES = {
-      dark: { fur: 0xefe9df, sock: 0xfbf9f5, eye: 0x2b2b2b, whisker: 0xc9c3b6 },
+      // dark-mode whites toned down a touch so the belly doesn't glare / hides its texture
+      dark: { fur: 0xe9e2d5, sock: 0xeee7d9, eye: 0x2b2b2b, whisker: 0xc9c3b6 },
       light: { fur: 0x2e2c31, sock: 0xf5f3ee, eye: 0xf5f3ee, whisker: 0x55525a },
     };
     const PINK = 0xe89aa4;
@@ -44,13 +48,48 @@
     const TEAL = 0x0d9488;
     const TEAL_LIGHT = 0x14b8a6;
     const SCREEN_BG = 0xdff5f0;
-    const SILVER = 0xd8d3ca;
-    const SILVER_DARK = 0xaaa59b;
+    const SILVER = 0x40454d; // laptop body — graphite (was bright silver, glared in dark mode)
+    const SILVER_DARK = 0x2b2f36; // keyboard / darker laptop parts
+    // ---- desk props (developer vignette) ----
+    const MUG = 0xe0785f; // warm terracotta-coral ceramic
+    const COFFEE = 0x3f2a1d;
+    const LEAF = 0x5a9a49;
+    const LEAF_DARK = 0x437637;
+    const POT = 0xb96a43;
+    const SOIL = 0x2f2620;
+    const BOOK_A = 0xc75d5d;
+    const BOOK_B = 0xd7a13f;
+    const BOOK_C = 0x3f6fa3;
 
-    const matFur = new THREE.MeshLambertMaterial();
-    const matSock = new THREE.MeshLambertMaterial();
-    const matEye = new THREE.MeshLambertMaterial();
-    const matWhisker = new THREE.MeshLambertMaterial();
+    // ---- subtle fur "texture for color": faint grayscale mottle that multiplies
+    // the theme color, so the pelt reads as crafted material instead of dead-flat. ----
+    function makeFurTexture() {
+      const s = 128;
+      const c = document.createElement("canvas");
+      c.width = c.height = s;
+      const ctx = c.getContext("2d")!;
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, s, s);
+      for (let i = 0; i < 900; i++) {
+        const v = 232 + Math.floor(Math.random() * 22); // subtle darker specks
+        ctx.fillStyle = `rgba(${v},${v},${v},0.45)`;
+        ctx.beginPath();
+        ctx.arc(Math.random() * s, Math.random() * s, 0.6 + Math.random() * 2.4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      const tex = new THREE.CanvasTexture(c);
+      tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = 4;
+      return tex;
+    }
+    const furTex = makeFurTexture();
+
+    // PBR materials — soft matte plastic/clay look, lit mostly by an environment map
+    const matFur = new THREE.MeshStandardMaterial({ roughness: 0.96, metalness: 0.0, map: furTex, envMapIntensity: 0.28 });
+    const matSock = new THREE.MeshStandardMaterial({ roughness: 0.92, metalness: 0.0, envMapIntensity: 0.22 });
+    const matEye = new THREE.MeshStandardMaterial({ roughness: 0.32, metalness: 0.0, envMapIntensity: 0.9 });
+    const matWhisker = new THREE.MeshStandardMaterial({ roughness: 0.6, metalness: 0.0, envMapIntensity: 0.4 });
 
     let ready = false; // renderer/camera exist — safe to render on demand
     function applyTheme() {
@@ -76,7 +115,7 @@
     ) {
       const mat =
         typeof material === "number"
-          ? new THREE.MeshLambertMaterial({ color: material })
+          ? new THREE.MeshStandardMaterial({ color: material, roughness: 0.62, metalness: 0.0, envMapIntensity: 0.6 })
           : material;
       const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
       mesh.position.set(x + w / 2, y + h / 2, z + d / 2);
@@ -88,15 +127,15 @@
 
     // ---- teal rug (brand accent) ----
     const rug = new THREE.Mesh(
-      new THREE.CylinderGeometry(6.4, 6.4, 0.35, 10),
-      new THREE.MeshLambertMaterial({ color: TEAL, flatShading: true })
+      new THREE.CylinderGeometry(7.4, 7.4, 0.35, 10),
+      new THREE.MeshStandardMaterial({ color: TEAL, roughness: 0.85, metalness: 0.0, flatShading: true, envMapIntensity: 0.5 })
     );
     rug.position.y = 0.175;
     rug.receiveShadow = true;
     model.add(rug);
     const rugTop = new THREE.Mesh(
-      new THREE.CylinderGeometry(4.6, 4.6, 0.12, 10),
-      new THREE.MeshLambertMaterial({ color: TEAL_LIGHT, flatShading: true })
+      new THREE.CylinderGeometry(5.9, 5.9, 0.12, 10),
+      new THREE.MeshStandardMaterial({ color: TEAL_LIGHT, roughness: 0.8, metalness: 0.0, flatShading: true, envMapIntensity: 0.5 })
     );
     rugTop.position.y = 0.41;
     rugTop.receiveShadow = true;
@@ -109,11 +148,92 @@
     body.position.y = R;
     model.add(body);
 
-    // ---- sitting body: wide hips, chest rising, cat facing +z ----
-    B(body, -3, 0, -2.6, 6, 3, 4.6, matFur); // hips
-    B(body, -2.6, 3, -2.3, 5.2, 2.4, 4, matFur); // lower back
-    B(body, -2.1, 5.4, -1.8, 4.2, 2.2, 3.1, matFur); // chest / shoulders
-    B(body, -1.1, 2.6, 1.15, 2.2, 3.4, 0.5, matSock); // white chest patch
+    // ---- sitting body built from small voxels (cat facing +z) ----
+    // A smooth curved profile (superellipse cross-section that tapers with height)
+    // is sampled on a fine grid, then only the visible shell cubes are kept and
+    // merged — so the back/shoulders read as many small stepped blocks, not slabs.
+    {
+      const V = 0.45; // voxel size — small = thinner, finer layers (craftz-like)
+      const P = 2.55; // superellipse exponent (rounded-rectangle cross-section)
+      // profile control points: [y, halfWidthX, zBack, zFront]
+      const PROFILE: [number, number, number, number][] = [
+        [0.2, 2.5, -2.3, 1.7],
+        [1.5, 3.0, -2.6, 1.9],
+        [3.0, 2.85, -2.5, 1.85],
+        [4.4, 2.55, -2.3, 1.6],
+        [5.8, 2.3, -2.05, 1.45],
+        [7.0, 2.0, -1.7, 1.2],
+        [7.6, 1.8, -1.45, 1.05],
+      ];
+      const profileAt = (y: number) => {
+        const yc = Math.max(PROFILE[0][0], Math.min(PROFILE[PROFILE.length - 1][0], y));
+        let a = PROFILE[0], b = PROFILE[PROFILE.length - 1];
+        for (let i = 0; i < PROFILE.length - 1; i++) {
+          if (yc >= PROFILE[i][0] && yc <= PROFILE[i + 1][0]) { a = PROFILE[i]; b = PROFILE[i + 1]; break; }
+        }
+        const span = b[0] - a[0] || 1;
+        let t = (yc - a[0]) / span;
+        t = t * t * (3 - 2 * t); // smoothstep
+        return {
+          halfW: a[1] + (b[1] - a[1]) * t,
+          zBack: a[2] + (b[2] - a[2]) * t,
+          zFront: a[3] + (b[3] - a[3]) * t,
+        };
+      };
+
+      const occ = new Set<string>();
+      const cells: { ix: number; iy: number; iz: number; x: number; y: number; z: number }[] = [];
+      const iyMax = Math.floor(7.55 / V);
+      for (let iy = 0; iy <= iyMax; iy++) {
+        const y = (iy + 0.5) * V;
+        const pr = profileAt(y);
+        const zc = (pr.zBack + pr.zFront) / 2;
+        const zh = (pr.zFront - pr.zBack) / 2;
+        const ixMax = Math.ceil(pr.halfW / V) + 1;
+        const izMin = Math.floor(pr.zBack / V) - 1;
+        const izMax = Math.ceil(pr.zFront / V) + 1;
+        for (let ix = -ixMax; ix <= ixMax; ix++) {
+          const x = ix * V;
+          for (let iz = izMin; iz <= izMax; iz++) {
+            const z = iz * V;
+            const nx = Math.abs(x) / pr.halfW;
+            const nz = Math.abs(z - zc) / zh;
+            if (Math.pow(nx, P) + Math.pow(nz, P) <= 1) {
+              occ.add(`${ix},${iy},${iz}`);
+              cells.push({ ix, iy, iz, x, y, z });
+            }
+          }
+        }
+      }
+
+      const has = (i: number, j: number, k: number) => occ.has(`${i},${j},${k}`);
+      const furGeos: THREE.BufferGeometry[] = [];
+      const sockGeos: THREE.BufferGeometry[] = [];
+      // Cubes are slightly larger than the grid spacing so neighbours overlap —
+      // no visible gaps ("cement") between them and no z-fighting on shared faces.
+      const cube = () => new THREE.BoxGeometry(V * 1.06, V * 1.06, V * 1.06);
+      for (const c of cells) {
+        const { ix, iy, iz, x, y, z } = c;
+        // keep the body SOLID (fill interior too) so you can never see through it;
+        // surface cubes get the material of the face they expose.
+        const g = cube();
+        g.translate(x, y, z);
+        // front-facing chest cubes in the bib window become the white patch
+        const frontExposed = !has(ix, iy, iz + 1);
+        const isBib = frontExposed && Math.abs(x) < 1.25 && y > 2.5 && y < 6.1;
+        (isBib ? sockGeos : furGeos).push(g);
+      }
+      const furMesh = new THREE.Mesh(mergeGeometries(furGeos), matFur);
+      furMesh.castShadow = true;
+      furMesh.receiveShadow = true;
+      body.add(furMesh);
+      if (sockGeos.length) {
+        const sockMesh = new THREE.Mesh(mergeGeometries(sockGeos), matSock);
+        sockMesh.castShadow = true;
+        sockMesh.receiveShadow = true;
+        body.add(sockMesh);
+      }
+    }
 
     // ---- head (tilted slightly toward the raised paw) ----
     const head = new THREE.Group();
@@ -121,7 +241,7 @@
     head.rotation.z = 0.07;
     head.rotation.x = 0.08; // looking down at the raised paw
     body.add(head);
-    B(head, -2.3, 0, -1.4, 4.6, 3.4, 3.3, matFur); // skull
+    B(head, -2.3, 0, -1.4, 4.6, 3.4, 3.3, matFur); // skull (single box — Olivio prefers the square head)
     B(head, -1.05, 0.35, 1.9, 2.1, 1.05, 0.55, matSock); // muzzle
     B(head, -0.34, 1.12, 2.28, 0.68, 0.42, 0.3, PINK_DARK); // nose
     // happy closed eyes — slit + tiny outer step (˘ ˘)
@@ -154,16 +274,17 @@
     B(body, 0.9, 0, 0.95, 1.6, 1.05, 2.2, matSock); // front foot
     B(body, -2.7, 0, 0.8, 1.5, 1.05, 2.2, matSock); // hind foot peeking
 
-    // ---- tail: S-curve standing away from the body (sways) ----
+    // ---- tail: resting on the floor, curling around the cat's right side (sways) ----
     const tail = new THREE.Group();
     tail.position.set(2.6, R, -1.6); // pivot at the hip
     model.add(tail);
     const T = matFur;
-    B(tail, 0.3, 0.1, -0.6, 1.0, 1.0, 1.0, T); // touches the hip
-    B(tail, 1.1, 0.5, -0.2, 1.0, 1.0, 1.0, T); // swings out, clear of the body
-    B(tail, 1.7, 1.0, 0.5, 1.0, 1.0, 1.0, T);
-    B(tail, 1.9, 1.7, 1.4, 1.0, 1.0, 1.0, T);
-    B(tail, 1.7, 2.4, 2.2, 1.0, 1.0, 1.0, matSock); // white tip, curling up
+    B(tail, -0.15, 0, -0.65, 0.9, 0.9, 0.9, T); // touches the hip
+    B(tail, 0.6, 0, -0.1, 0.9, 0.9, 0.9, T); // swings out along the floor
+    B(tail, 1.15, 0, 0.7, 0.9, 0.9, 0.9, T);
+    B(tail, 1.3, 0, 1.6, 0.9, 0.9, 0.9, T); // curves forward
+    B(tail, 1.0, 0, 2.4, 0.9, 0.9, 0.9, T); // curls back inward
+    B(tail, 0.55, 0, 2.95, 0.8, 0.8, 0.8, matSock); // white tip resting on the floor
 
     // ---- open laptop on the floor in front of the cat ----
     const laptop = new THREE.Group();
@@ -183,7 +304,88 @@
     B(lid, -1.35, 2.0, -0.3, 1.7, 0.24, 0.06, TEAL);
     B(lid, -1.35, 1.55, -0.3, 1.0, 0.24, 0.06, PINK_DARK);
     B(lid, -0.9, 1.1, -0.3, 1.8, 0.24, 0.06, TEAL);
-    B(lid, -0.35, 1.15, 0.11, 0.7, 0.7, 0.06, TEAL); // logo on the lid back
+    // ---- "</>" developer logo on the lid back, bold blocky strokes ----
+    const matIcon = new THREE.MeshStandardMaterial({ color: TEAL_LIGHT, roughness: 0.45, metalness: 0.0, envMapIntensity: 0.7 });
+    const ICZ = 0.11; // just proud of the lid's back face
+    const ISW = 0.16; // stroke thickness
+    function stroke(x0: number, y0: number, x1: number, y1: number) {
+      const steps = Math.max(2, Math.round(Math.hypot(x1 - x0, y1 - y0) / (ISW * 0.6)));
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const x = x0 + (x1 - x0) * t, y = y0 + (y1 - y0) * t;
+        B(lid, x - ISW / 2, y - ISW / 2, ICZ, ISW, ISW, 0.05, matIcon);
+      }
+    }
+    // left chevron "<"
+    stroke(-0.42, 1.72, -0.74, 1.35);
+    stroke(-0.74, 1.35, -0.42, 0.98);
+    // center slash "/"
+    stroke(-0.14, 0.94, 0.14, 1.76);
+    // right chevron ">"
+    stroke(0.42, 1.72, 0.74, 1.35);
+    stroke(0.74, 1.35, 0.42, 0.98);
+
+    // ---- coffee mug (front-left of the cat) with rising steam ----
+    const mug = new THREE.Group();
+    mug.position.set(-3.9, R, 3.7);
+    mug.rotation.y = 0.6;
+    model.add(mug);
+    // DoubleSide so the inner wall of the open cup is visible (reads as hollow)
+    const matMug = new THREE.MeshStandardMaterial({ color: MUG, roughness: 0.68, metalness: 0.0, flatShading: true, envMapIntensity: 0.4, side: THREE.DoubleSide });
+    const matCoffee = new THREE.MeshStandardMaterial({ color: COFFEE, roughness: 0.4, metalness: 0.0, flatShading: true, envMapIntensity: 0.55 });
+    // tapered faceted cup wall — OPEN top (no cap) so you can see into it
+    const cupBody = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.5, 1.15, 12, 1, true), matMug);
+    cupBody.position.y = 0.575;
+    cupBody.castShadow = true;
+    cupBody.receiveShadow = true;
+    mug.add(cupBody);
+    // closed bottom
+    const cupBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.08, 12), matMug);
+    cupBottom.position.y = 0.06;
+    cupBottom.receiveShadow = true;
+    mug.add(cupBottom);
+    // coffee surface, recessed ~0.25 below the rim so there's a visible cavity
+    const coffee = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.06, 12), matCoffee);
+    coffee.position.y = 0.9;
+    coffee.receiveShadow = true;
+    mug.add(coffee);
+    // ring handle — inner half hidden in the wall, outer half is the grip
+    const handle = new THREE.Mesh(new THREE.TorusGeometry(0.27, 0.09, 8, 16), matMug);
+    handle.position.set(0.6, 0.6, 0);
+    handle.castShadow = true;
+    mug.add(handle);
+
+    const matSteam = () =>
+      new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: 0.4, roughness: 1, metalness: 0, depthWrite: false });
+    const steamPuffs: { mesh: THREE.Mesh; baseY: number }[] = [];
+    for (let i = 0; i < 3; i++) {
+      const m = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.26, 0.26), matSteam());
+      m.position.set(-3.85 + (i - 1) * 0.12, R + 1.2 + i * 0.28, 3.7);
+      m.castShadow = false;
+      model.add(m);
+      steamPuffs.push({ mesh: m, baseY: m.position.y });
+    }
+
+    // ---- succulent in a terracotta pot (cat's left side) ----
+    const plant = new THREE.Group();
+    plant.position.set(-4.9, R, -0.6);
+    model.add(plant);
+    B(plant, -0.6, 0, -0.6, 1.2, 0.95, 1.2, POT); // pot
+    B(plant, -0.5, 0.95, -0.5, 1.0, 0.16, 1.0, SOIL); // soil
+    B(plant, -0.18, 1.05, -0.18, 0.36, 0.72, 0.36, LEAF); // center leaf
+    B(plant, -0.56, 1.05, -0.14, 0.32, 0.55, 0.3, LEAF_DARK);
+    B(plant, 0.24, 1.05, -0.14, 0.32, 0.55, 0.3, LEAF_DARK);
+    B(plant, -0.14, 1.05, -0.56, 0.3, 0.5, 0.32, LEAF);
+    B(plant, -0.14, 1.05, 0.26, 0.3, 0.5, 0.32, LEAF);
+
+    // ---- stack of books (front-right, clear of the tail) ----
+    const books = new THREE.Group();
+    books.position.set(4.5, R, 3.3);
+    books.rotation.y = -0.5;
+    model.add(books);
+    B(books, -0.9, 0, -0.7, 1.8, 0.34, 1.4, BOOK_C); // bottom
+    B(books, -0.82, 0.34, -0.6, 1.66, 0.3, 1.28, BOOK_A); // middle
+    B(books, -0.72, 0.64, -0.66, 1.5, 0.28, 1.32, BOOK_B); // top
 
     // center the model on x/z so it spins around its middle
     const bounds = new THREE.Box3().setFromObject(model);
@@ -201,9 +403,9 @@
     scene.add(ground);
 
     // ---- lights ----
-    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-    scene.add(new THREE.HemisphereLight(0xffffff, 0x8899aa, 0.5));
-    const sun = new THREE.DirectionalLight(0xffffff, 1.15);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x8899aa, 0.35));
+    const sun = new THREE.DirectionalLight(0xffffff, 1.2);
     sun.position.set(12, 20, 8);
     sun.castShadow = true;
     sun.shadow.mapSize.set(1024, 1024);
@@ -217,7 +419,7 @@
     const target = new THREE.Vector3(0, 4.9, 0);
     const camera = new THREE.OrthographicCamera();
     const RADIUS = 30;
-    const CAM_HEIGHT = 13;
+    const CAM_HEIGHT = 16; // slightly higher / more top-down view
 
     function frameCamera() {
       const aspect = container.clientWidth / Math.max(container.clientHeight, 1);
@@ -236,7 +438,14 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.NeutralToneMapping; // gentle, hue-preserving product look
+    renderer.toneMappingExposure = 0.98;
     container.appendChild(renderer.domElement);
+
+    // soft studio environment (image-based lighting) — gives the matte-plastic sheen
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    pmrem.dispose();
 
     function resize() {
       renderer.setSize(container.clientWidth, container.clientHeight);
@@ -247,44 +456,30 @@
     resize();
     new ResizeObserver(resize).observe(container);
 
-    // ---- orbit + drag ----
+    // ---- orbit controls: drag to rotate (X + Y), wheel/pinch to zoom ----
     const START = -0.35; // 3/4 view: face + raised paw toward the viewer
-    let azimuth = START;
-    const autoSpeed = reduceMotion ? 0 : 0.35; // rad/s
-    let dragging = false;
-    let lastX = 0;
-    let velocity = 0;
+    camera.position.set(RADIUS * Math.sin(START), CAM_HEIGHT, RADIUS * Math.cos(START));
+    camera.lookAt(target);
 
-    container.addEventListener("pointerdown", (e) => {
-      dragging = true;
-      lastX = e.clientX;
-      container.setPointerCapture(e.pointerId);
-    });
-    container.addEventListener("pointermove", (e) => {
-      if (!dragging) return;
-      const dx = e.clientX - lastX;
-      lastX = e.clientX;
-      azimuth += dx * 0.008;
-      velocity = dx * 0.008;
-      if (reduceMotion) render();
-    });
-    const endDrag = () => { dragging = false; };
-    container.addEventListener("pointerup", endDrag);
-    container.addEventListener("pointercancel", endDrag);
-
-    function positionCamera() {
-      camera.position.set(
-        RADIUS * Math.sin(azimuth),
-        CAM_HEIGHT,
-        RADIUS * Math.cos(azimuth)
-      );
-      camera.lookAt(target);
-    }
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.copy(target);
+    controls.enablePan = false;
+    controls.enableDamping = !reduceMotion;
+    controls.dampingFactor = 0.09;
+    controls.rotateSpeed = 0.85;
+    controls.zoomSpeed = 0.9;
+    controls.minZoom = 0.65; // limit zoom-out
+    controls.maxZoom = 2.6; // limit zoom-in
+    controls.minPolarAngle = 0.55; // don't tip fully top-down
+    controls.maxPolarAngle = 1.5; // don't dip under the floor
+    controls.autoRotate = !reduceMotion; // always-on idle spin (never stops)
+    controls.autoRotateSpeed = 1.8;
+    controls.update();
 
     function render() {
-      positionCamera();
       renderer.render(scene, camera);
     }
+    if (reduceMotion) controls.addEventListener("change", render);
 
     // ---- idle life: breathing, tail sway, random ear twitch ----
     let twitchEar: THREE.Mesh | null = null;
@@ -295,6 +490,14 @@
       const s = now / 1000;
       body.scale.y = 1 + 0.012 * Math.sin(s * 1.7); // breathing
       tail.rotation.y = 0.10 * Math.sin(s * 1.2); // tail sway
+      // coffee steam: each puff rises and fades on an offset loop
+      steamPuffs.forEach((p, i) => {
+        const ph = (s * 0.5 + i * 0.34) % 1;
+        p.mesh.position.y = p.baseY + ph * 1.5;
+        (p.mesh.material as THREE.MeshStandardMaterial).opacity = 0.42 * (1 - ph);
+        const sc = 0.55 + ph * 0.7;
+        p.mesh.scale.set(sc, sc, sc);
+      });
       if (now > nextTwitch && !twitchEar) {
         twitchEar = Math.random() < 0.5 ? earL : earR;
         twitchUntil = now + 320;
@@ -310,11 +513,10 @@
       }
     }
 
-    // entrance: quick ease-in spin + fade
+    // entrance: quick ease-out spin that settles into the idle rotation
     const ENTER_MS = 900;
     const startTime = performance.now();
     let visible = true;
-    let last = startTime;
 
     const io = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
@@ -322,26 +524,17 @@
     io.observe(container);
 
     function tick(now: number) {
-      const dt = Math.min((now - last) / 1000, 0.05);
-      last = now;
-
       if (visible) {
-        const t = Math.min((now - startTime) / ENTER_MS, 1);
-        const easeOut = 1 - Math.pow(1 - t, 3);
-        if (t < 1) {
-          azimuth = START - 1.4 * (1 - easeOut);
-        } else if (!dragging) {
-          if (Math.abs(velocity) > 0.001) {
-            azimuth += velocity;
-            velocity *= 0.94; // inertia after release
-          } else {
-            azimuth += autoSpeed * dt;
-          }
+        if (controls.autoRotate) {
+          const t = Math.min((now - startTime) / ENTER_MS, 1);
+          const easeOut = 1 - Math.pow(1 - t, 3);
+          controls.autoRotateSpeed = 1.8 + 7 * (1 - easeOut); // fast → idle
         }
+        controls.update(); // required for damping + auto-rotate
         animateLife(now);
         render();
       }
-      if (!reduceMotion) requestAnimationFrame(tick);
+      requestAnimationFrame(tick);
     }
 
     ready = true;
